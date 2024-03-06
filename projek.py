@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
-import plotly as py
 
 order_payment= pd.read_csv("order_payments_dataset.csv")
 order_payment.head()
