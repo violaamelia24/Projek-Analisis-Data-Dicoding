@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
 import streamlit as st
 import matplotlib.pyplot as plt
+import plotly as py
 
 order_payment= pd.read_csv("order_payments_dataset.csv")
 order_payment.head()
@@ -17,6 +19,7 @@ df=df_two.drop(columns=['product_name_lenght', 'product_description_lenght', 'pr
 df['order_date'] = df['order_purchase_timestamp'].str[:10]
 df['order_date'] = pd.to_datetime(df['order_date'])
 list(df)
+df.dropna()
 
 st.title('Sales Report')
 tab1, tab2, = st.tabs(["Average Sales","Type of Payment" ])
@@ -73,3 +76,4 @@ with tab2 :
     plt.ylabel('Count')
     plt.show()
     st.pyplot(fig)
+
