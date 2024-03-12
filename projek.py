@@ -40,9 +40,10 @@ with tab1 :
     selected_year = st.radio("Select Year", [2016, 2017, 2018])
 
     filtered_df = filter_data_by_year(df, selected_year)
-    average_sales = df.groupby('order_date')['payment_value'].mean().reset_index()
     
-    fig2 = plt.figure(figsize=(15,6))
+    average_sales = filtered_df.groupby('order_date')['payment_value'].mean().reset_index()
+    
+    fig1 = plt.figure(figsize=(15,6))
     plt.plot(average_sales['order_date'], average_sales['payment_value'])
 
     max_value = average_sales['payment_value'].max()
@@ -60,11 +61,11 @@ with tab1 :
     plt.xticks(rotation=30)
     plt.grid(True)
 
-    st.pyplot(fig2)
+    st.pyplot(fig1)
 
 with tab2 :
     #barchart
-    fig= plt.figure(figsize=(5,6))
+    fig2= plt.figure(figsize=(5,6))
     plt.style.use('fivethirtyeight')
     plt.bar(
         x=df["payment_type"].unique(),
@@ -74,5 +75,5 @@ with tab2 :
     plt.xlabel('Payment Installments')
     plt.ylabel('Count')
     plt.show()
-    st.pyplot(fig)
+    st.pyplot(fig2)
 
