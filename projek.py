@@ -41,7 +41,7 @@ with tab1 :
 
     filtered_df = filter_data_by_year(df, selected_year)
 
-    average_sales = filtered_df.groupby('order_date')['payment_value'].mean().reset_index()
+    average_sales_date = filtered_df.groupby('order_date')['payment_value'].mean().reset_index()
     average_sales=average_sales_date.resample('M',on='order_date').mean()
     average_sales_monthly=average_sales.dropna()
 
