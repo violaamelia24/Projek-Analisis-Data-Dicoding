@@ -30,7 +30,7 @@ with st.sidebar :
     st.sidebar.markdown("www.shoppingishobby.com")
 
 with tab1 :
-    st.subheader("Average sales/month in year")
+    st.subheader("Average sales/day in year")
 #line chart
     def filter_data_by_year(df, year):
         filtered_df = df[df['order_date'].dt.year == year]
@@ -40,28 +40,25 @@ with tab1 :
     selected_year = st.radio("Select Year", [2016, 2017, 2018])
 
     filtered_df = filter_data_by_year(df, selected_year)
-    sum_sales_date = df.groupby('order_date')['payment_value'].sum().reset_index()
-    average_sales=sum_sales_date.resample('M',on='order_date').mean()
-    average_sales_monthly=average_sales.dropna()
-
+    average_sales = df.groupby('order_date')['payment_value'].mean().reset_index()
+    
     fig2 = plt.figure(figsize=(15,6))
-    plt.plot(average_sales_monthly.index, average_sales_monthly['payment_value'])
+    plt.plot(average_sales['order_date'], average_sales['payment_value'])
 
-    max_value_monthly = average_sales_monthly['payment_value'].max()
-    min_value_monthly = average_sales_monthly['payment_value'].min()
+    max_value = average_sales['payment_value'].max()
+    min_value = average_sales['payment_value'].min()
 
-    max_index_monthly = average_sales_monthly.loc[average_sales_monthly['payment_value'] == max_value_monthly].index[0]
-    min_index_monthly = average_sales_monthly.loc[average_sales_monthly['payment_value'] == min_value_monthly].index[0]
+    max_index = average_sales.loc[average_sales['payment_value'] == max_value, 'order_date'].iloc[0]
+    min_index = average_sales.loc[average_sales['payment_value'] == min_value, 'order_date'].iloc[0]
 
-    plt.text(max_index_monthly, max_value_monthly, f'{max_value_monthly:.2f}', ha='left', va='bottom')
-    plt.text(min_index_monthly, min_value_monthly, f'{min_value_monthly:.2f}', ha='left', va='top')
+    plt.text(max_index, max_value, f'{max_value:.2f}', ha='left', va='bottom')
+    plt.text(min_index, min_value, f'{min_value:.2f}', ha='left', va='top')
 
-    plt.title("Penjualan")
-    plt.xlabel("Waktu")
-    plt.ylabel("Rata-rata penjualan/bulan")
+    plt.title("Average Sales/day")
+    plt.xlabel("Date")
+    plt.ylabel("Average Sales")
     plt.xticks(rotation=30)
     plt.grid(True)
-    plt.show()
 
     st.pyplot(fig2)
 
