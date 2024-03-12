@@ -30,7 +30,7 @@ with st.sidebar :
     st.sidebar.markdown("www.shoppingishobby.com")
 
 with tab1 :
-    st.subheader("Average sales/day in year")
+    st.subheader("Average sales/month in year")https://github.com/violaamelia24/Projek-Analisis-Data-Dicoding/blob/main/projek.py
 #line chart
     def filter_data_by_year(df, year):
         filtered_df = df[df['order_date'].dt.year == year]
@@ -40,9 +40,8 @@ with tab1 :
     selected_year = st.radio("Select Year", [2016, 2017, 2018])
 
     filtered_df = filter_data_by_year(df, selected_year)
-
-    average_sales_date = filtered_df.groupby('order_date')['payment_value'].mean().reset_index()
-    average_sales=average_sales_date.resample('M',on='order_date').mean()
+    sum_sales_date = df.groupby('order_date')['payment_value'].sum().reset_index()
+    average_sales=sum_sales_date.resample('M',on='order_date').mean()
     average_sales_monthly=average_sales.dropna()
 
     fig2 = plt.figure(figsize=(15,6))
