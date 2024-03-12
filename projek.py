@@ -18,7 +18,8 @@ df=df_two.drop(columns=['product_name_lenght', 'product_description_lenght', 'pr
 df['order_date'] = df['order_purchase_timestamp'].str[:10]
 df['order_date'] = pd.to_datetime(df['order_date'])
 list(df)
-df.dropna()
+
+df=df.dropna()
 
 st.title('Sales Report')
 tab1, tab2, = st.tabs(["Average Sales","Type of Payment" ])
@@ -41,24 +42,27 @@ with tab1 :
     filtered_df = filter_data_by_year(df, selected_year)
 
     average_sales = filtered_df.groupby('order_date')['payment_value'].mean().reset_index()
+    average_sales=average_sales_date.resample('M',on='order_date').mean()
+    average_sales_monthly=average_sales.dropna()
 
-    fig2 = plt.figure(figsize=(15, 6))
-    plt.plot(average_sales['order_date'], average_sales['payment_value'], marker='o')
+    fig2 = plt.figure(figsize=(15,6))
+    plt.plot(average_sales_monthly.index, average_sales_monthly['payment_value'])
 
-    max_value = average_sales['payment_value'].max()
-    min_value = average_sales['payment_value'].min()
+    max_value_monthly = average_sales_monthly['payment_value'].max()
+    min_value_monthly = average_sales_monthly['payment_value'].min()
 
-    max_index = average_sales.loc[average_sales['payment_value'] == max_value, 'order_date'].iloc[0]
-    min_index = average_sales.loc[average_sales['payment_value'] == min_value, 'order_date'].iloc[0]
+    max_index_monthly = average_sales_monthly.loc[average_sales_monthly['payment_value'] == max_value_monthly].index[0]
+    min_index_monthly = average_sales_monthly.loc[average_sales_monthly['payment_value'] == min_value_monthly].index[0]
 
-    plt.text(max_index, max_value, f'{max_value:.2f}', ha='left', va='bottom')
-    plt.text(min_index, min_value, f'{min_value:.2f}', ha='left', va='top')
+    plt.text(max_index_monthly, max_value_monthly, f'{max_value_monthly:.2f}', ha='left', va='bottom')
+    plt.text(min_index_monthly, min_value_monthly, f'{min_value_monthly:.2f}', ha='left', va='top')
 
-    plt.title("Sales")
-    plt.xlabel("Time")
-    plt.ylabel("Average sells/day")
+    plt.title("Penjualan")
+    plt.xlabel("Waktu")
+    plt.ylabel("Rata-rata penjualan/bulan")
     plt.xticks(rotation=30)
     plt.grid(True)
+    plt.show()
 
     st.pyplot(fig2)
 
