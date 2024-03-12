@@ -30,7 +30,7 @@ with st.sidebar :
     st.sidebar.markdown("www.shoppingishobby.com")
 
 with tab1 :
-    st.subheader("Average sales/month in year")https://github.com/violaamelia24/Projek-Analisis-Data-Dicoding/blob/main/projek.py
+    st.subheader("Average sales/month in year")
 #line chart
     def filter_data_by_year(df, year):
         filtered_df = df[df['order_date'].dt.year == year]
